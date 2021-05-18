@@ -13,6 +13,20 @@ public class LeapYear {
             System.out.printf("%d is not a leap year.\n", year);
         }
     }
+    /** returns a boolean value
+     true if the input integer year is divisable by 400 OR
+     year is divisable by 4 but not by 100
+    */
+    public static boolean isLeapYear(int year){
+        boolean result = false;
+        if(year % 400 == 0){
+            result = true;
+        }
+        else if(year % 4 == 0 && year % 100 != 0){
+            result = true;
+        }
+        return result;
+    }
 
     /** Must be provided an integer as a command line argument ARGS. */
     public static void main(String[] args) {
