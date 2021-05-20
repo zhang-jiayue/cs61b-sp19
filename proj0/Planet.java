@@ -99,6 +99,11 @@ public class Planet{
 		this.yyPos += this.yyVel * dt;
 	}
 
-	
+	public void draw(){
+		String path = "/images/" + this.imgFileName;
+		StdDraw.picture(this.xxPos, this.yyPos, path);
+	}
+
+
 
 }
