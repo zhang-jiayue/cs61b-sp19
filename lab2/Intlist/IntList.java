@@ -81,8 +81,22 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if(A == null){
+            return B;
+        }
+        if(B == null){
+            return A;
+        }
+        IntList ptr = A;
+       while (A.rest != null){
+           A = A.rest;
+       }
+       A.rest = B;
+
+
+
+
+        return ptr;
     }
 
     /**
@@ -90,8 +104,13 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if(A == null){
+            return B;
+        }
+        if(B == null){
+            return A;
+        }
+        return new IntList(A.first, catenate(A.rest, B));
     }
 
 
@@ -229,6 +248,17 @@ public class IntList {
         }
         out.format(")");
         return out.toString();
+    }
+/*
+Returns the ith item of this IntList.
+ */
+    public int get(int i){
+        int counter = 0;
+        IntList p = this;
+        if (i == 0) {
+            return first;
+        }
+        return rest.get(i - 1);
     }
 }
 

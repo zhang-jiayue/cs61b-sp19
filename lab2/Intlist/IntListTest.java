@@ -66,4 +66,9 @@ public class IntListTest {
         assertEquals(IntList.of(1, 2, 3), A);
     }
 
+    @Test
+    public void testGet(){
+
+    }
+
 }
