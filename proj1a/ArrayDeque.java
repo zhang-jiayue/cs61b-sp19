@@ -20,27 +20,24 @@ public class ArrayDeque<T> {
     private int minusOne(int index) {
         if (index == 0) {
             return this.items.length - 1;
-        }
-        else{
-            return index -1 ;
+        } else {
+            return index - 1;
         }
     }
 
     private int plusOne(int index) {
         if (index == this.items.length - 1) {
             return 0;
-        }
-        else{
+        } else {
             return index + 1;
         }
     }
 
     public void addFirst(T item) {
-        if(this.items[this.nextFirst] == null){
+        if (this.items[this.nextFirst] == null) {
             this.items[this.nextFirst] = item;
             this.nextFirst = minusOne(this.nextFirst);
-        }
-        else{   //the array is full
+        } else {   //the array is full
             resize(this.items.length * 2);
             this.items[this.nextFirst] = item;
             this.nextFirst = minusOne(this.nextFirst);
@@ -49,11 +46,10 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T item) {
-        if(this.items[this.nextLast] == null){
+        if (this.items[this.nextLast] == null) {
             this.items[this.nextLast] = item;
             this.nextLast = plusOne(this.nextLast);
-        }
-        else{   //the array is full
+        } else {   //the array is full
             resize(this.items.length * 2);
             this.items[this.nextLast] = item;
             this.nextLast = plusOne(this.nextLast);
@@ -62,7 +58,7 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for(int i = 0; i < this.items.length; i++){
+        for (int i = 0; i < this.items.length; i++) {
             System.out.println(this.items[i]);
         }
     }
@@ -78,14 +74,13 @@ public class ArrayDeque<T> {
     public T removeFirst() {
         if (this.size == 0) {
             return null;
-        }
-        else {
+        } else {
             T ptr =  this.items[this.plusOne(this.nextFirst)];
             this.items[this.plusOne(this.nextFirst)] = null;
             this.nextFirst = this.plusOne(this.nextFirst);
             this.size--;
             updateUsage();
-            if(this.usage < 0.25){
+            if (this.usage < 0.25) {
                 resize(this.items.length / 2);
             }
             return ptr;
@@ -96,7 +91,7 @@ public class ArrayDeque<T> {
 
     public T get(int index) {
         int j = this.nextFirst;
-        for(int i = 0; i <= index; i++){
+        for (int i = 0; i <= index; i++) {
             j = plusOne(j);
         }
         return this.items[j];
@@ -105,8 +100,7 @@ public class ArrayDeque<T> {
     public T removeLast() {
         if (this.size == 0) {
             return null;
-        }
-        else {
+        } else {
             T ptr =  this.items[this.minusOne(this.nextLast)];
             this.items[this.minusOne(this.nextLast)] = null;
             this.nextLast = this.minusOne(this.nextLast);
