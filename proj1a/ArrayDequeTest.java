@@ -37,25 +37,25 @@ public class ArrayDequeTest {
         System.out.println("Running add/isEmpty/Size test.");
 //		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        ArrayDeque<String> arr1 = new ArrayDeque<>();
+        ArrayDeque<String> arr = new ArrayDeque<>();
 
-        boolean passed = checkEmpty(true, arr1.isEmpty());
+        boolean passed = checkEmpty(true, arr.isEmpty());
 
-        arr1.addFirst("front");
+        arr.addFirst("front");
 
         // The && operator is the same as "and" in Python.
         // It's a binary operator that returns true if both arguments true, and false otherwise.
-        passed = checkSize(1, arr1.size()) && passed;
-        passed = checkEmpty(false, arr1.isEmpty()) && passed;
+        passed = checkSize(1, arr.size()) && passed;
+        passed = checkEmpty(false, arr.isEmpty()) && passed;
 
-        arr1.addLast("middle");
-        passed = checkSize(2, arr1.size()) && passed;
+        arr.addLast("middle");
+        passed = checkSize(2, arr.size()) && passed;
 
-        arr1.addLast("back");
-        passed = checkSize(3, arr1.size()) && passed;
+        arr.addLast("back");
+        passed = checkSize(3, arr.size()) && passed;
 
         System.out.println("Printing out deque: ");
-        arr1.printDeque();
+        arr.printDeque();
 
         printTestStatus(passed);
 
@@ -64,25 +64,25 @@ public class ArrayDequeTest {
         System.out.println("Running add/isEmpty/Size test.");
 //		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        ArrayDeque<String> arr1 = new ArrayDeque<>();
+        ArrayDeque<String> arr = new ArrayDeque<>();
 
-        boolean passed = checkEmpty(true, arr1.isEmpty());
+        boolean passed = checkEmpty(true, arr.isEmpty());
 
-        arr1.addFirst("back");
+        arr.addFirst("back");
 
         // The && operator is the same as "and" in Python.
         // It's a binary operator that returns true if both arguments true, and false otherwise.
-        passed = checkSize(1, arr1.size()) && passed;
-        passed = checkEmpty(false, arr1.isEmpty()) && passed;
+        passed = checkSize(1, arr.size()) && passed;
+        passed = checkEmpty(false, arr.isEmpty()) && passed;
 
-        arr1.addFirst("middle");
-        passed = checkSize(2, arr1.size()) && passed;
+        arr.addFirst("middle");
+        passed = checkSize(2, arr.size()) && passed;
 
-        arr1.addFirst("front");
-        passed = checkSize(3, arr1.size()) && passed;
+        arr.addFirst("front");
+        passed = checkSize(3, arr.size()) && passed;
 
         System.out.println("Printing out deque: ");
-        arr1.printDeque();
+        arr.printDeque();
 
         printTestStatus(passed);
 
@@ -92,64 +92,112 @@ public class ArrayDequeTest {
         System.out.println("Running add/isEmpty/Size test.");
 //		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        ArrayDeque<String> arr1 = new ArrayDeque<>();
+        ArrayDeque<String> arr = new ArrayDeque<>();
 
-        boolean passed = checkEmpty(true, arr1.isEmpty());
+        boolean passed = checkEmpty(true, arr.isEmpty());
 
-        arr1.addFirst("back");
+        arr.addFirst("back");
 
         // The && operator is the same as "and" in Python.
         // It's a binary operator that returns true if both arguments true, and false otherwise.
-        passed = checkSize(1, arr1.size()) && passed;
-        passed = checkEmpty(false, arr1.isEmpty()) && passed;
+        passed = checkSize(1, arr.size()) && passed;
+        passed = checkEmpty(false, arr.isEmpty()) && passed;
 
-        arr1.addFirst("middle");
-        passed = checkSize(2, arr1.size()) && passed;
+        arr.addFirst("middle");
+        passed = checkSize(2, arr.size()) && passed;
 
-        arr1.addFirst("front");
-        passed = checkSize(3, arr1.size()) && passed;
-
-        System.out.println("Printing out deque: ");
-        arr1.printDeque();
-
-        arr1.removeFirst();
-        passed = checkSize(2, arr1.size()) && passed;
-
-        arr1.removeLast();
-        passed = checkSize(1, arr1.size()) && passed;
-
+        arr.addFirst("front");
+        passed = checkSize(3, arr.size()) && passed;
 
         System.out.println("Printing out deque: ");
-        arr1.printDeque();
+        arr.printDeque();
+
+        arr.removeFirst();
+        passed = checkSize(2, arr.size()) && passed;
+
+        arr.removeLast();
+        passed = checkSize(1, arr.size()) && passed;
+        passed = arr.get(3).equals("middle") & passed;
+
+
+        System.out.println("Printing out deque: ");
+        arr.printDeque();
+
+        //remove everything from the array
+        arr.removeLast();
+        passed = checkSize(0, arr.size()) && passed;
+        passed = arr.get(3) == null & passed;
+        System.out.println("Printing out deque: ");
+        arr.printDeque();
+
+        //removeFirst and removeLast when the array is empty
+        arr.removeLast();
+        passed = checkSize(0, arr.size()) && passed;
+        arr.removeFirst();
+        System.out.println("Printing out deque: ");
+        arr.printDeque();
+
 
         printTestStatus(passed);
 
     }
 
-//    /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
-//    public static void addRemoveTest() {
+    /** Adds items until the array is full, then add another item, and ensures that arr is resized. */
+    public static void addFullArrayTest() {
+
+        ArrayDeque<String> arr = new ArrayDeque<>();
+
+        boolean passed = checkEmpty(true, arr.isEmpty());
+
+        arr.addFirst("string3");
+
+        // The && operator is the same as "and" in Python.
+        // It's a binary operator that returns true if both arguments true, and false otherwise.
+        passed = checkSize(1, arr.size()) && passed;
+        passed = checkEmpty(false, arr.isEmpty()) && passed;
+
+        arr.addFirst("string2");
+        passed = checkSize(2, arr.size()) && passed;
+
+        arr.addFirst("string1");
+        passed = checkSize(3, arr.size()) && passed;
+
+        System.out.println("Printing out deque: ");
+        arr.printDeque();
+
+        arr.addLast("string4");
+        arr.addLast("string5");
+        arr.addLast("string6");
+        arr.addLast("string7");
+        arr.addLast("string8");
+
+        passed = checkSize(8, arr.size()) && passed;
+
+
+        System.out.println("Printing out deque: ");
+        arr.printDeque();
+
+        //add additional item when the array is already full
+        arr.addLast("string9");
+        passed = checkSize(9, arr.size()) && passed;
+
+        System.out.println("Printing out deque: ");
+        arr.printDeque();
+//        passed = arr.get(3) == null & passed;
+//        System.out.println("Printing out deque: ");
+//        arr.printDeque();
 //
-//        System.out.println("Running add/remove test.");
-//
-////		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-//
-//        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
-//        // should be empty
-//        boolean passed = checkEmpty(true, lld1.isEmpty());
-//
-//        lld1.addFirst(10);
-//        // should not be empty
-//        passed = checkEmpty(false, lld1.isEmpty()) && passed;
-//
-//        lld1.removeFirst();
-//        // should be empty
-//        passed = checkEmpty(true, lld1.isEmpty()) && passed;
-////		lld1.printDeque();
-//
-//
-//        printTestStatus(passed);
-//
-//    }
+//        //removeFirst and removeLast when the array is empty
+//        arr.removeLast();
+//        passed = checkSize(0, arr.size()) && passed;
+//        arr.removeFirst();
+//        System.out.println("Printing out deque: ");
+//        arr.printDeque();
+
+
+        printTestStatus(passed);
+
+    }
 //
 //    public static void getTest() {
 //
@@ -193,6 +241,7 @@ public class ArrayDequeTest {
         addIsEmptySizeTest();
         addFirstTest();
         removeTest();
+        addFullArrayTest();
 //        addRemoveTest();
 //        getTest();
     }
