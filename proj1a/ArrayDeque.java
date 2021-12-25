@@ -95,7 +95,7 @@ public class ArrayDeque<T> {
 
 
     public T get(int index) {
-        int j = index;
+        int j = this.nextFirst;
         for(int i = 0; i <= index; i++){
             j = plusOne(j);
         }
@@ -127,9 +127,9 @@ public class ArrayDeque<T> {
             newItems[j] = this.items[i];
             j++;
         }
+        this.items = newItems;
         this.nextFirst = this.items.length - 1;
         this.nextLast = this.size;
-        this.items = newItems;
     }
 
 }

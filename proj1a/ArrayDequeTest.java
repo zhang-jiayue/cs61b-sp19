@@ -117,7 +117,7 @@ public class ArrayDequeTest {
 
         arr.removeLast();
         passed = checkSize(1, arr.size()) && passed;
-        passed = arr.get(1).equals("middle") & passed;
+        passed = arr.get(0).equals("middle") & passed;
 
 
         System.out.println("Printing out deque: ");
@@ -143,7 +143,7 @@ public class ArrayDequeTest {
     }
 
     /** Adds items until the array is full, then add another item, and ensures that arr is resized. */
-    public static void addFullArrayTest() {
+    public static void addFullArrayGetTest() {
 
         ArrayDeque<String> arr = new ArrayDeque<>();
 
@@ -184,9 +184,13 @@ public class ArrayDequeTest {
         System.out.println("Printing out deque: ");
         arr.printDeque();
 
+        passed = arr.get(0).equals("string1") && passed;
+
         printTestStatus(passed);
 
     }
+
+
 //
 //    public static void getTest() {
 //
@@ -230,7 +234,7 @@ public class ArrayDequeTest {
         addIsEmptySizeTest();
         addFirstTest();
         removeTest();
-        addFullArrayTest();
+        addFullArrayGetTest();
 //        addRemoveTest();
 //        getTest();
     }
