@@ -14,7 +14,7 @@ public class ArrayDeque<T> {
 
 
     private void updateUsage() {
-        this.usage = this.size / this.items.length;
+        this.usage = (double) this.size / this.items.length;
     }
 
     private int minusOne(int index) {
@@ -85,7 +85,7 @@ public class ArrayDeque<T> {
             this.nextFirst = this.plusOne(this.nextFirst);
             this.size--;
             updateUsage();
-            if(this.items.length >= 16 & this.usage < 0.25){
+            if(this.usage < 0.25){
                 resize(this.items.length / 2);
             }
             return ptr;
@@ -123,7 +123,7 @@ public class ArrayDeque<T> {
         //copy items in the original array to newItems, starting at index 0
         T[] newItems = (T[]) new Object[cap];
         int j = 0;
-        for (int i = plusOne(this.nextFirst); i < this.size & j < this.size; i = plusOne(i)) {
+        for (int i = plusOne(this.nextFirst); j < this.size; i = plusOne(i)) {
             newItems[j] = this.items[i];
             j++;
         }
