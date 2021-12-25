@@ -10,7 +10,7 @@ public class LinkedListDeque  <T>{
         this.sentinel.next = this.sentinel;
     }
 
-    public class IntNode{
+    private class IntNode{
         public IntNode prev;
         public IntNode next;
         public T item;
@@ -99,7 +99,7 @@ public class LinkedListDeque  <T>{
 /*
 * same as get, but use recursion
  */
-    public T getRecursiveHelper(IntNode ptr, int index){
+    private T getRecursiveHelper(IntNode ptr, int index){
         if(index == -1){
             return ptr.item;
         }

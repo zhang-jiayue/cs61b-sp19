@@ -12,20 +12,27 @@ public class ArrayDeque <T>{
         this.nextLast = items.length/2 + 1;
     }
 
-    public ArrayDeque(int len) {
-        this.size = 0;
-        this.items = (T [])new Object[len];
-        this.nextFirst = items.length / 2;
-        this.nextLast = items.length/2 + 1;
-    }
 
-    public void updateUsage(){
+    private void updateUsage(){
         this.usage = this.size / this.items.length;
     }
 
-    public int minusOne(int index){
-        int resu = 0;
-        return resu;
+    private int minusOne(int index){
+        if(index == 0){
+            return this.items.length - 1;
+        }
+        else{
+            return index -1 ;
+        }
+    }
+
+    private int plusOne(int index){
+        if(index == this.items.length + 1){
+            return 0;
+        }
+        else{
+            return index + 1;
+        }
     }
 
     public void addFirst(T item) {
