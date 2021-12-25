@@ -94,7 +94,11 @@ public class ArrayDeque<T> {
 
 
     public T get(int index) {
-        return this.items[index];
+        int j = index;
+        for(int i = 0; i <= index; i++){
+            j = plusOne(j);
+        }
+        return this.items[j];
     }
 
     public T removeLast() {

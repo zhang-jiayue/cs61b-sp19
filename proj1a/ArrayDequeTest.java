@@ -117,7 +117,7 @@ public class ArrayDequeTest {
 
         arr.removeLast();
         passed = checkSize(1, arr.size()) && passed;
-        passed = arr.get(3).equals("middle") & passed;
+        passed = arr.get(1).equals("middle") & passed;
 
 
         System.out.println("Printing out deque: ");
