@@ -193,33 +193,16 @@ public class ArrayDequeTest {
         ArrayDeque<Integer> ArrayDeque = new ArrayDeque<>();
         int resu = 0;
         ArrayDeque.addLast(0);
-        ArrayDeque.removeLast();
+        ArrayDeque.addLast(1);
         ArrayDeque.addLast(2);
         ArrayDeque.addLast(3);
         ArrayDeque.addLast(4);
-        ArrayDeque.removeLast();
-        ArrayDeque.addFirst(6);
-        ArrayDeque.get(1);
+        ArrayDeque.addLast(5);
+        ArrayDeque.addLast(6);
+        ArrayDeque.addLast(7);
         ArrayDeque.addLast(8);
         ArrayDeque.addLast(9);
-        ArrayDeque.removeFirst();
-        ArrayDeque.addLast(11);
-        ArrayDeque.addFirst(12);
-        ArrayDeque.addFirst(13);
-        ArrayDeque.addFirst(14);
-        ArrayDeque.get(4);
         ArrayDeque.removeLast();
-        ArrayDeque.addFirst(17);
-        ArrayDeque.addFirst(18);
-        ArrayDeque.addFirst(19);
-        ArrayDeque.removeFirst();
-        ArrayDeque.removeFirst();
-        //keep removing until the usage factor is under 25%
-        ArrayDeque.removeFirst();
-        ArrayDeque.removeFirst();
-        ArrayDeque.removeFirst();
-        ArrayDeque.removeFirst();
-        ArrayDeque.removeFirst();
 
         resu = ArrayDeque.removeFirst();
 

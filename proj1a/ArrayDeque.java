@@ -80,7 +80,7 @@ public class ArrayDeque<T> {
             this.nextFirst = this.plusOne(this.nextFirst);
             this.size--;
             updateUsage();
-            if (this.usage < 0.25) {
+            if (this.usage < 0.25 & this.items.length >= 16) {
                 resize(this.items.length / 2);
             }
             return ptr;
@@ -105,6 +105,7 @@ public class ArrayDeque<T> {
             this.items[this.minusOne(this.nextLast)] = null;
             this.nextLast = this.minusOne(this.nextLast);
             this.size--;
+            updateUsage();
             if (this.items.length >= 16 & this.usage < 0.25) {
                 resize(this.items.length / 2);
             }
