@@ -87,7 +87,7 @@ public class ArrayDeque<T> {
             if(this.items.length >= 16 & this.usage < 0.25){
                 resize(this.items.length / 2);
             }
-            return this.items[this.nextFirst + 1];
+            return this.items[plusOne(this.nextFirst)];
         }
 
     }
@@ -108,7 +108,7 @@ public class ArrayDeque<T> {
             if (this.items.length >= 16 & this.usage < 0.25) {
                 resize(this.items.length / 2);
             }
-            return this.items[this.nextLast - 1];
+            return this.items[minusOne(this.nextLast)];
         }
 
     }
