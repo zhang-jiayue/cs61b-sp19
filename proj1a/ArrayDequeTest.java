@@ -88,6 +88,44 @@ public class ArrayDequeTest {
 
     }
 
+    public static void removeTest() {
+        System.out.println("Running add/isEmpty/Size test.");
+//		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
+
+        ArrayDeque<String> arr1 = new ArrayDeque<>();
+
+        boolean passed = checkEmpty(true, arr1.isEmpty());
+
+        arr1.addFirst("back");
+
+        // The && operator is the same as "and" in Python.
+        // It's a binary operator that returns true if both arguments true, and false otherwise.
+        passed = checkSize(1, arr1.size()) && passed;
+        passed = checkEmpty(false, arr1.isEmpty()) && passed;
+
+        arr1.addFirst("middle");
+        passed = checkSize(2, arr1.size()) && passed;
+
+        arr1.addFirst("front");
+        passed = checkSize(3, arr1.size()) && passed;
+
+        System.out.println("Printing out deque: ");
+        arr1.printDeque();
+
+        arr1.removeFirst();
+        passed = checkSize(2, arr1.size()) && passed;
+
+        arr1.removeLast();
+        passed = checkSize(1, arr1.size()) && passed;
+
+
+        System.out.println("Printing out deque: ");
+        arr1.printDeque();
+
+        printTestStatus(passed);
+
+    }
+
 //    /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
 //    public static void addRemoveTest() {
 //
@@ -154,6 +192,7 @@ public class ArrayDequeTest {
         System.out.println("Running tests.\n");
         addIsEmptySizeTest();
         addFirstTest();
+        removeTest();
 //        addRemoveTest();
 //        getTest();
     }

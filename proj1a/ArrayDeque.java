@@ -87,14 +87,8 @@ public class ArrayDeque <T>{
             return null;
         }
         else{
-            if(this.nextFirst == this.items.length - 1){
-                this.items[0] = null;
-                this.nextFirst = 0;
-            }
-            else{
-                this.items[this.nextFirst + 1] = null;
-                this.nextFirst = this.nextFirst + 1;
-            }
+            this.items[this.plusOne(this.nextFirst)] = null;
+            this.nextFirst = this.plusOne(this.nextFirst);
             this.size --;
             updateUsage();
             if(this.items.length >= 16 & this.usage < 0.25){
@@ -115,14 +109,8 @@ public class ArrayDeque <T>{
             return null;
         }
         else{
-            if(this.nextLast - 1 >= 0 & this.nextLast - 1 < this.items.length){
-                this.items[this.nextLast - 1] = null;
-                this.nextLast = this.nextLast - 1;
-            }
-            else if(this.nextLast ==0){
-                this.items[this.items.length - 1] = null;
-                this.nextLast = this.items.length - 2;
-            }
+            this.items[this.minusOne(this.nextLast)] = null;
+            this.nextLast = this.minusOne(this.nextLast);
             this.size --;
             if(this.items.length >= 16 & this.usage < 0.25){
                 resize(this.items.length / 2);
