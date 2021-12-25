@@ -77,7 +77,7 @@ public class ArrayDeque<T> {
 
     public T removeFirst() {
         if (this.size == 0) {
-            return null;
+            return this.items[0];
         }
         else {
             this.items[this.plusOne(this.nextFirst)] = null;
@@ -99,7 +99,7 @@ public class ArrayDeque<T> {
 
     public T removeLast() {
         if (this.size == 0) {
-            return null;
+            return this.items[0];
         }
         else {
             this.items[this.minusOne(this.nextLast)] = null;
