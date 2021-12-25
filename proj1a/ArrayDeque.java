@@ -75,20 +75,27 @@ public class ArrayDeque <T>{
         return this.size;
     }
 
-    public void removeFirst() {
-        if(this.nextFirst == this.items.length - 1){
-            this.items[0] = null;
-            this.nextFirst = 0;
+    public T removeFirst() {
+        if(this.size == 0){
+            return null;
         }
         else{
-            this.items[this.nextFirst + 1] = null;
-            this.nextFirst = this.nextFirst + 1;
+            if(this.nextFirst == this.items.length - 1){
+                this.items[0] = null;
+                this.nextFirst = 0;
+            }
+            else{
+                this.items[this.nextFirst + 1] = null;
+                this.nextFirst = this.nextFirst + 1;
+            }
+            this.size --;
+            updateUsage();
+            if(this.items.length >= 16 & this.usage < 0.25){
+                resize(this.items.length / 2);
+            }
+            return this.items[this.nextFirst + 1];
         }
-        this.size --;
-        updateUsage();
-        if(this.items.length >= 16 & this.usage < 0.25){
-            resize(this.items.length / 2);
-        }
+
     }
 
 
@@ -96,19 +103,26 @@ public class ArrayDeque <T>{
         return this.items[this.size];
     }
 
-    public void removeLast(){
-        if(this.nextLast - 1 >= 0 & this.nextLast - 1 < this.items.length){
-            this.items[this.nextLast - 1] = null;
-            this.nextLast = this.nextLast - 1;
+    public T removeLast(){
+        if(this.size == 0){
+            return null;
         }
-        else if(this.nextLast ==0){
-            this.items[this.items.length - 1] = null;
-            this.nextLast = this.items.length - 2;
+        else{
+            if(this.nextLast - 1 >= 0 & this.nextLast - 1 < this.items.length){
+                this.items[this.nextLast - 1] = null;
+                this.nextLast = this.nextLast - 1;
+            }
+            else if(this.nextLast ==0){
+                this.items[this.items.length - 1] = null;
+                this.nextLast = this.items.length - 2;
+            }
+            this.size --;
+            if(this.items.length >= 16 & this.usage < 0.25){
+                resize(this.items.length / 2);
+            }
+            return this.items[this.nextLast - 1];
         }
-        this.size --;
-        if(this.items.length >= 16 & this.usage < 0.25){
-            resize(this.items.length / 2);
-        }
+
     }
 
     private void resize(int cap){

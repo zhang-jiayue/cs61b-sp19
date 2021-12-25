@@ -58,14 +58,29 @@ public class LinkedListDeque  <T>{
     }
 
 
-    public void removeFirst(){
-        this.sentinel.next = this.sentinel.next.next;
-        this.sentinel.next.prev = this.sentinel;
-        this.size --;
+    public T removeFirst(){
+        if(this.size == 0){
+            return null;
+        }
+        else{
+            this.sentinel.next = this.sentinel.next.next;
+            this.sentinel.next.prev = this.sentinel;
+            this.size --;
+            return this.sentinel.next.item;
+        }
+
     }
 
-    public void removeLast(){
-
+    public T removeLast(){
+        if(this.size == 0){
+            return null;
+        }
+        else{
+            this.sentinel.prev.prev.next = this.sentinel;
+            this.sentinel.prev = this.sentinel.prev.prev;
+            this.size --;
+            return this.sentinel.prev.item;
+        }
     }
 /*
 * get method that must use iteration, not recursion
