@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 
 /** Performs some basic linked list tests. */
 public class ArrayDequeTest {
@@ -37,8 +36,6 @@ public class ArrayDequeTest {
      * && is the "and" operation. */
     public static void addIsEmptySizeTest() {
         System.out.println("Running add/isEmpty/Size test.");
-//		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-
         ArrayDeque<String> arr = new ArrayDeque<>();
 
         boolean passed = checkEmpty(true, arr.isEmpty());
@@ -64,8 +61,6 @@ public class ArrayDequeTest {
     }
     public static void addFirstTest() {
         System.out.println("Running add/isEmpty/Size test.");
-//		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-
         ArrayDeque<String> arr = new ArrayDeque<>();
 
         boolean passed = checkEmpty(true, arr.isEmpty());
@@ -92,10 +87,7 @@ public class ArrayDequeTest {
 
     public static void removeTest() {
         System.out.println("Running add/isEmpty/Size test.");
-//		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-
         ArrayDeque<String> arr = new ArrayDeque<>();
-
         boolean passed = checkEmpty(true, arr.isEmpty());
 
         arr.addFirst("back");
@@ -144,11 +136,11 @@ public class ArrayDequeTest {
 
     }
 
-    /** Adds items until the array is full, then add another item, and ensures that arr is resized. */
+    /** Adds items until the array is full,
+     * then add another item, and ensures that arr is resized. */
     public static void addFullArrayGetTest() {
 
         ArrayDeque<String> arr = new ArrayDeque<>();
-
         boolean passed = checkEmpty(true, arr.isEmpty());
 
         arr.addFirst("string3");
@@ -190,21 +182,21 @@ public class ArrayDequeTest {
 
         printTestStatus(passed);
 
-        ArrayDeque<Integer> ArrayDeque = new ArrayDeque<>();
+        ArrayDeque<Integer> arrDeque = new ArrayDeque<>();
         int resu = 0;
-        ArrayDeque.addLast(0);
-        ArrayDeque.addLast(1);
-        ArrayDeque.addLast(2);
-        ArrayDeque.addLast(3);
-        ArrayDeque.addLast(4);
-        ArrayDeque.addLast(5);
-        ArrayDeque.addLast(6);
-        ArrayDeque.addLast(7);
-        ArrayDeque.addLast(8);
-        ArrayDeque.addLast(9);
-        ArrayDeque.removeLast();
+        arrDeque.addLast(0);
+        arrDeque.addLast(1);
+        arrDeque.addLast(2);
+        arrDeque.addLast(3);
+        arrDeque.addLast(4);
+        arrDeque.addLast(5);
+        arrDeque.addLast(6);
+        arrDeque.addLast(7);
+        arrDeque.addLast(8);
+        arrDeque.addLast(9);
+        arrDeque.removeLast();
 
-        resu = ArrayDeque.removeFirst();
+        resu = arrDeque.removeFirst();
 
     }
 
