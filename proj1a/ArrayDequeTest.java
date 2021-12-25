@@ -183,17 +183,6 @@ public class ArrayDequeTest {
 
         System.out.println("Printing out deque: ");
         arr.printDeque();
-//        passed = arr.get(3) == null & passed;
-//        System.out.println("Printing out deque: ");
-//        arr.printDeque();
-//
-//        //removeFirst and removeLast when the array is empty
-//        arr.removeLast();
-//        passed = checkSize(0, arr.size()) && passed;
-//        arr.removeFirst();
-//        System.out.println("Printing out deque: ");
-//        arr.printDeque();
-
 
         printTestStatus(passed);
 
