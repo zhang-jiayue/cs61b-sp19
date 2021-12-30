@@ -27,7 +27,7 @@ public class GuitarString {
         for (int i = 0; i < limit; i += 1) {
             this.buffer.dequeue();
         }
-        for (int i = 0; i < this.buffer.capacity() - 1; i += 1) {
+        for (int i = 0; i < this.buffer.capacity(); i += 1) {
             double r  = Math.random() - 0.5;
             this.buffer.enqueue(r);
 
@@ -38,7 +38,6 @@ public class GuitarString {
      * the Karplus-Strong algorithm. 
      */
     public void tic() throws RuntimeException {
-
         double front = this.buffer.dequeue();
         this.buffer.enqueue((this.buffer.peek() + front) / 2 * DECAY);
     }
