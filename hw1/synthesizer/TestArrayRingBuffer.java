@@ -9,11 +9,19 @@ import static org.junit.Assert.*;
 public class TestArrayRingBuffer {
     @Test
     public void someTest() {
-        //ArrayRingBuffer arb = new ArrayRingBuffer(10);
+        ArrayRingBuffer arb = new ArrayRingBuffer(10);
+        arb.enqueue(6);
+        arb.enqueue(5);
+        arb.enqueue(4);
+        arb.enqueue(3);
+        int actual = (int) arb.dequeue();
+        assertEquals(6, actual);
+        assertEquals(3, arb.fillCount());
+        assertEquals(5, arb.peek());
     }
 
-    /** Calls tests for ArrayRingBuffer. */
-    public static void main(String[] args) {
-        jh61b.junit.textui.runClasses(TestArrayRingBuffer.class);
-    }
-} 
+//    /** Calls tests for ArrayRingBuffer. */
+//    public static void main(String[] args) {
+//        jh61b.junit.textui.runClasses(TestArrayRingBuffer.class);
+//    }
+}
