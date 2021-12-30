@@ -48,7 +48,7 @@ public class GuitarString {
         try {
             return this.buffer.peek();
         } catch (RuntimeException e) {
-            return -1;
+            return 0.0;
         }
     }
 }
