@@ -1,8 +1,8 @@
- package synthesizer;
+package synthesizer;
 import java.util.Iterator;
 
 
- public class ArrayRingBuffer<T>  extends  AbstractBoundedQueue<T> {
+public class ArrayRingBuffer<T>  extends  AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;            // index for the next dequeue or peek
     /* Index for the next enqueue. */
@@ -23,7 +23,7 @@ import java.util.Iterator;
      * throw new RuntimeException("Ring buffer overflow"). Exceptions
      * covered Monday.
      */
-    private int plusOne(int x){
+    private int plusOne(int x) {
         if (x == this.rb.length - 1) {
             return 0;
         } else {
@@ -67,26 +67,25 @@ import java.util.Iterator;
      * Return oldest item, but don't remove it.
      */
     public T peek() {
+        if (this.fillCount == 0){
+            throw new RuntimeException("Empty buffer.");
+        }
         return this.rb[this.first];
-        // TODO: Return the first item. None of your instance variables should change.
     }
 
 
 
-
-     // TODO: When you get to part 5, implement the needed code to support iteration.
-
-     @Override
+    @Override
      public Iterator<T> iterator() {
-         return new bufferIterator();
-     }
+        return new BufferIterator();
+    }
 
-     public class bufferIterator<T> implements Iterator<T> {
+    public class BufferIterator<T> implements Iterator<T> {
         private int ptr;
-        public bufferIterator() {
+        public BufferIterator() {
             ptr = 0;
         }
-        public boolean hasNext(){
+        public boolean hasNext() {
             return (ptr != capacity);
         }
         public T next() {
@@ -94,5 +93,5 @@ import java.util.Iterator;
             ptr += 1;
             return returnItem;
         }
-     }
+    }
 }
