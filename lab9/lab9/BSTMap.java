@@ -70,7 +70,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (p == null) {
             this.size += 1;
             p =  new Node(key, value);    /* Returns a one node BSTMap. */
-        } else if (p.key == key) {  /* The key is already present, updates value. */
+        } else if (p.key.compareTo(key) == 0) {  /* The key is already present, updates value. */
             p.value = value;
         } else if (key.compareTo(p.key) < 0) {
             p.left = putHelper(key, value, p.left);
