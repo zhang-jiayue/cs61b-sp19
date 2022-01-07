@@ -24,26 +24,24 @@ public class PercolationStats {
              * estimate the percolation threshold: n / N * N
              * where when we open the nth site the system percolates
              */
-            int th = 0;
             while (!p.percolates()) {
                 p.open(StdRandom.uniform(0, N), StdRandom.uniform(0, N));
-                th += 1;
             }
             /**
              * x_t = fraction of open sites
              */
-            this.thresholds[i] = th / N * N;
+            this.thresholds[i] = p.numberOfOpenSites() / N * N;
         }
 
 
     }
 
     public double mean() {
-        return StdStats.mean(this.thresholds) / this.repeatTime;
+        return StdStats.mean(this.thresholds) / this.repeatTime / 100;
     }
 
     public double stddev() {
-        return StdStats.stddev(this.thresholds) / (this.repeatTime - 1);
+        return StdStats.stddev(this.thresholds) / (this.repeatTime - 1) / 100;
 
     }
 
