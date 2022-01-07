@@ -31,11 +31,14 @@ public class Percolation {
 
     public void open(int row, int col) {
         if (row < 0 || col < 0 || row >= this.N || col >= this.N) {
-            throw new IndexOutOfBoundsException("Index < 0 or >=N is illegal");
+            throw new IndexOutOfBoundsException("Index < 0 or >= N is illegal");
         }
         int index = xyTo1d(row, col);
-        this.open[index] = true;
-        this.numOfOpenSites += 1;
+        if (this.open[index] == false) {
+            this.open[index] = true;
+            this.numOfOpenSites += 1;
+        }
+
         /**
          *  Check all the 4 neighbouring sites to see if any of them is open,
          *  if there is one, union the newly opened site with this neighbour.
@@ -71,8 +74,20 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         /**
          * If a site is full, it is connected to the virtual top site.
+         * To check backwash, for all the sites in the bottom row,
+         * it is full if only one it is open and at least one of its neighbour is full.
+         *                Neighbour1
+         * Neighbour2     bottomSite    Neighbour3
          */
+        if (row == N - 1) {
+            boolean fullNeighboor = false;
+            if (isFull(row  - 1, col)) {
+                fullNeighboor = true;
+            }
+            return sites.connected(xyTo1d(row, col), N * N) && fullNeighboor;
+        }
         return sites.connected(xyTo1d(row, col), N * N);
+
     }
 
     public int numberOfOpenSites() {
