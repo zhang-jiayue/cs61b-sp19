@@ -44,16 +44,22 @@ public class Percolation {
          *  x - 1      itself     x + 1
          *             x + N
          */
-        if (isOpen(row - 1, col)) {
+        if (row == 0) {
+            this.sites.union(index, N * N);
+        }
+        if (row == N - 1) {
+            this.sites.union(index, N * N + 1);
+        }
+        if (row - 1 > 0 && isOpen(row - 1, col)) {
             this.sites.union(index, index - N);
         }
-        if (isOpen(row, col - 1)) {
+        if (row - 1 > 0 && isOpen(row, col - 1)) {
             this.sites.union(index, index - 1);
         }
-        if (isOpen(row, col + 1)) {
+        if (col + 1 < N && isOpen(row, col + 1)) {
             this.sites.union(index, index + 1);
         }
-        if (isOpen(row + 1, col)) {
+        if (row + 1 < N && isOpen(row + 1, col)) {
             this.sites.union(index, index + N);
         }
     }
