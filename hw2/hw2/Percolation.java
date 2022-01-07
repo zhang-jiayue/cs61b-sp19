@@ -34,9 +34,27 @@ public class Percolation {
             throw new IndexOutOfBoundsException("Index < 0 or >= N is illegal");
         }
         int index = xyTo1d(row, col);
-        if (this.open[index] == false) {
+        if (!this.open[index]) {
             this.open[index] = true;
             this.numOfOpenSites += 1;
+            if (row == 0) {
+                this.sites.union(index, N * N);
+            }
+            if (row == N - 1) {
+                this.sites.union(index, N * N + 1);
+            }
+            if (row - 1 >= 0 && isOpen(row - 1, col)) {
+                this.sites.union(index, index - N);
+            }
+            if (col - 1 >= 0 && isOpen(row, col - 1)) {
+                this.sites.union(index, index - 1);
+            }
+            if (col + 1 < N && isOpen(row, col + 1)) {
+                this.sites.union(index, index + 1);
+            }
+            if (row + 1 < N && isOpen(row + 1, col)) {
+                this.sites.union(index, index + N);
+            }
         }
 
         /**
@@ -47,31 +65,20 @@ public class Percolation {
          *  x - 1      itself     x + 1
          *             x + N
          */
-        if (row == 0) {
-            this.sites.union(index, N * N);
-        }
-        if (row == N - 1) {
-            this.sites.union(index, N * N + 1);
-        }
-        if (row - 1 >= 0 && isOpen(row - 1, col)) {
-            this.sites.union(index, index - N);
-        }
-        if (row - 1 >= 0 && isOpen(row, col - 1)) {
-            this.sites.union(index, index - 1);
-        }
-        if (col + 1 < N && isOpen(row, col + 1)) {
-            this.sites.union(index, index + 1);
-        }
-        if (row + 1 < N && isOpen(row + 1, col)) {
-            this.sites.union(index, index + N);
-        }
+
     }
 
     public boolean isOpen(int row, int col) {
+        if (row < 0 || col < 0 || row >= this.N || col >= this.N) {
+            throw new IndexOutOfBoundsException("Index < 0 or >= N is illegal");
+        }
         return this.open[xyTo1d(row, col)];
     }
 
     public boolean isFull(int row, int col) {
+        if (row < 0 || col < 0 || row >= this.N || col >= this.N) {
+            throw new IndexOutOfBoundsException("Index < 0 or >= N is illegal");
+        }
         /**
          * If a site is full, it is connected to the virtual top site.
          * To check backwash, for all the sites in the bottom row,
@@ -79,7 +86,7 @@ public class Percolation {
          *                Neighbour1
          * Neighbour2     bottomSite    Neighbour3
          */
-        if (row == N - 1) {
+        if (row == N - 1 && row != 0) {
             boolean fullNeighboor = false;
             if (isFull(row  - 1, col)) {
                 fullNeighboor = true;
