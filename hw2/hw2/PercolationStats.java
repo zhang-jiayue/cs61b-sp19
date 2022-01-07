@@ -29,7 +29,10 @@ public class PercolationStats {
                 p.open(StdRandom.uniform(0, N), StdRandom.uniform(0, N));
                 th += 1;
             }
-            this.thresholds[i] = th;
+            /**
+             * x_t = fraction of open sites
+             */
+            this.thresholds[i] = th / N * N;
         }
 
 
