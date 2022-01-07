@@ -59,7 +59,7 @@ public class Percolation {
             if (row + 1 < N && isOpen(row + 1, col)) {
                 this.sites.union(index, index + N);
             }
-            for (int i = 0; i < this.N; i ++) {
+            for (int i = 0; i < this.N; i += 1) {
                 if (isFull(N - 1, i)) {
                     this.sites.union(xyTo1d(N - 1, i), N * N + 1);
                 }
