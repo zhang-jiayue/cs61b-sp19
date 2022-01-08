@@ -25,7 +25,7 @@ public class PercolationStats {
              * where when we open the nth site the system percolates
              */
             while (!p.percolates()) {
-                p.open(StdRandom.uniform(0, N), StdRandom.uniform(0, N));
+                p.open(StdRandom.uniform(N), StdRandom.uniform(N));
             }
             /**
              * x_t = fraction of open sites
@@ -37,11 +37,11 @@ public class PercolationStats {
     }
 
     public double mean() {
-        return StdStats.mean(this.thresholds) / this.repeatTime / 100;
+        return StdStats.mean(this.thresholds);
     }
 
     public double stddev() {
-        return StdStats.stddev(this.thresholds) / (this.repeatTime - 1) / 100;
+        return StdStats.stddev(this.thresholds);
 
     }
 
