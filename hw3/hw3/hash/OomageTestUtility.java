@@ -12,6 +12,16 @@ public class OomageTestUtility {
          * and ensure that no bucket has fewer than N / 50
          * Oomages and no bucket has more than N / 2.5 Oomages.
          */
-        return false;
+        boolean resu = true;
+        int[] bucketNums = new int[M];
+        int i = 0;
+        for (Oomage o : oomages) {
+            bucketNums[(o.hashCode() & 0x7FFFFFFF) % M] += 1;
+            i += 1;
+        }
+        for (i = 0; i < M; i++) {
+            resu = resu & bucketNums[i] > (double) oomages.size() / 50 & bucketNums[i] < oomages.size() / 2.5;
+        }
+        return resu;
     }
 }
