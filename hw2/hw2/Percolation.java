@@ -5,6 +5,8 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private WeightedQuickUnionUF sites;
     private boolean[] open;
+    private int [] lastRowOpenSites;
+    private int lastRowOpenCounter;
     private int N;
     private int numOfOpenSites;
 
@@ -19,6 +21,7 @@ public class Percolation {
          */
         this.open = new boolean[N * N];
         this.N = N;
+        this.lastRowOpenSites = new int[N];
     }
 
     private int xyTo1d(int x, int y) {
@@ -44,30 +47,33 @@ public class Percolation {
                 /** Whenever we open a site in the bottom row,
                  *  it's parent is updated to the virtual bottom site.
                  */
-                this.sites.union(N * N + 1, index);
+                this.lastRowOpenSites[lastRowOpenCounter] = col;
+                lastRowOpenCounter += 1;
+//                this.sites.union(N * N + 1, index);
             }
+
             /**
              * If any of the bottom row sites becomes full,
              * we add it to the virtual bottom site
              */
             if (row - 1 >= 0 && isOpen(row - 1, col)) {
-                this.sites.union(index, index - N);
+                this.sites.union(index - N, index);
             }
             if (col - 1 >= 0 && isOpen(row, col - 1)) {
-                this.sites.union(index, index - 1);
+                this.sites.union(index - 1, index);
             }
             if (col + 1 < N && isOpen(row, col + 1)) {
-                this.sites.union(index, index + 1);
+                this.sites.union(index + 1, index);
             }
             if (row + 1 < N && isOpen(row + 1, col)) {
-                this.sites.union(index, index + N);
+                this.sites.union(index + N, index);
             }
+        }
             //solves backwash problem but wrong runtime: O(n) instead of constant time
-//            for (int i = 0; i < this.N; i += 1) {
-//                if (isFull(N - 1, i)) {
-//                    this.sites.union(xyTo1d(N - 1, i), N * N + 1);
-//                }
-//            }
+        for (int i = 0; i < lastRowOpenCounter; i += 1) {
+            if (isFull(N - 1, lastRowOpenSites[i])) {
+                this.sites.union(xyTo1d(N - 1, lastRowOpenSites[i]), N * N + 1);
+            }
         }
 
         /**
