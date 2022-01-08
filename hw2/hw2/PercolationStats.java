@@ -30,7 +30,7 @@ public class PercolationStats {
             /**
              * x_t = fraction of open sites
              */
-            this.thresholds[i] = p.numberOfOpenSites() / (N * N);
+            this.thresholds[i] = (double)p.numberOfOpenSites() / (N * N);
         }
 
 
