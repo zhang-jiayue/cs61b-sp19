@@ -40,9 +40,12 @@ public class Percolation {
             if (row == 0) {
                 this.sites.union(index, N * N);
             }
-//            if (row == N - 1) {
-//                this.sites.union(index, N * N + 1);
-//            }
+            if (row == N - 1) {
+                /** Whenever we open a site in the bottom row,
+                 *  it's parent is updated to the virtual bottom site.
+                 */
+                this.sites.union(N * N + 1, index);
+            }
             /**
              * If any of the bottom row sites becomes full,
              * we add it to the virtual bottom site
@@ -59,11 +62,12 @@ public class Percolation {
             if (row + 1 < N && isOpen(row + 1, col)) {
                 this.sites.union(index, index + N);
             }
-            for (int i = 0; i < this.N; i += 1) {
-                if (isFull(N - 1, i)) {
-                    this.sites.union(xyTo1d(N - 1, i), N * N + 1);
-                }
-            }
+            //solves backwash problem but wrong runtime: O(n) instead of constant time
+//            for (int i = 0; i < this.N; i += 1) {
+//                if (isFull(N - 1, i)) {
+//                    this.sites.union(xyTo1d(N - 1, i), N * N + 1);
+//                }
+//            }
         }
 
         /**
@@ -95,14 +99,8 @@ public class Percolation {
          *                Neighbour1
          * Neighbour2     bottomSite    Neighbour3
          */
-//        if (row == N - 1 && row != 0) {
-//            boolean fullNeighboor = false;
-//            if (isFull(row  - 1, col)) {
-//                fullNeighboor = true;
-//            }
-//            return sites.connected(xyTo1d(row, col), N * N) && fullNeighboor;
-//        }
-        return sites.connected(xyTo1d(row, col), N * N);
+        int index = xyTo1d(row, col);
+        return sites.connected(index, N * N);
 
     }
 

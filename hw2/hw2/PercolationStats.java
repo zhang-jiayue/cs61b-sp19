@@ -25,7 +25,7 @@ public class PercolationStats {
              * where when we open the nth site the system percolates
              */
             while (!p.percolates()) {
-                p.open(StdRandom.uniform(0, N), StdRandom.uniform(0, N));
+                p.open(StdRandom.uniform(0, N * N), StdRandom.uniform(0, N * N));
             }
             /**
              * x_t = fraction of open sites
