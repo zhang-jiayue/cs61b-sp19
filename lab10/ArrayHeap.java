@@ -197,7 +197,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     public T removeMin() {
         T min = contents[1].item();
         swap(1, size);
-        size --;
+        size--;
         contents[size + 1] = null;  // Avoid loitering.
         sink(1);
         return min;
@@ -222,7 +222,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        for (int i = 1; i <= this.size; i ++) {
+        for (int i = 1; i <= this.size; i++) {
             if (getNode(i).item().equals(item)) {
                 getNode(i).myPriority = priority;
                 sink(i);
