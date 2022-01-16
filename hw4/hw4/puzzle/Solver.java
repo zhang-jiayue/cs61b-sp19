@@ -57,8 +57,11 @@ public class Solver {
         while (!currenNode.state.isGoal()) {
             // Remove lowest priority item and add its neighbors to the priority queue.
             for (WorldState neighbor : this.currenNode.state.neighbors()) {
-                pq.insert(new SearchNode(neighbor, this.currenNode));
-                thingsEverEnqued += 1;
+                if(this.currenNode.previousNode== null || !this.currenNode.previousNode.state.equals(neighbor)){
+                    // Critical optimization:
+                    pq.insert(new SearchNode(neighbor, this.currenNode));
+                    thingsEverEnqued += 1;
+                }
             }
             SearchNode prev = this.currenNode;
             this.currenNode = pq.delMin();
