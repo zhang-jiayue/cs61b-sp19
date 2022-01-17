@@ -99,13 +99,12 @@ public class Board implements WorldState {
                  *  difference = 3 * (j - J) + (i - I)
                  * resu += (j - J) + (i - I)
                  */
-                int actual = tiles[i][j];
-                int expected = goal[i][j];
-                int expectedJ = actual % this.N - 1;
-                int expectedI;
+                int actual = this.tiles[i][j];
+                int expected = this.goal[i][j];
                 if (actual != expected & actual != 0) {
+                    int expectedJ = actual % this.N - 1;
                     // Since We don't care about the position of blank.
-                    expectedI = actual / N - 1;
+                    int expectedI = (int) (Math.ceil((double)actual / this.N) - 1);
                     resu += Math.abs(expectedI - i) + Math.abs(expectedJ - j);
                 }
             }
@@ -123,7 +122,16 @@ public class Board implements WorldState {
         } else if (this.getClass() != y.getClass()) {
             return false;
         } else {
-            return hamming() == 0;
+            boolean resu = true;
+            Board other = (Board) y;
+            for (int row = 0; resu & row < this.N; row++) {
+                for (int col = 0; resu & col < this.N; col++) {
+                    if (this.tiles[row][col] != other.tiles[row][col]) {
+                        resu = false;
+                    }
+                }
+            }
+            return resu;
         }
 
     }
