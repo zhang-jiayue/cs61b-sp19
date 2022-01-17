@@ -1,6 +1,6 @@
 package hw4.puzzle;
 
-public interface WorldState{
+public interface WorldState {
 
     /**
      * Provides an estimate of the number of moves to reach the goal.
@@ -16,6 +16,4 @@ public interface WorldState{
     default boolean isGoal() {
         return estimatedDistanceToGoal() == 0;
     }
-
-
 }

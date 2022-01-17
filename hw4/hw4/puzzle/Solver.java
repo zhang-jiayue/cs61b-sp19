@@ -1,7 +1,8 @@
 package hw4.puzzle;
 import edu.princeton.cs.algs4.MinPQ;
 
-import java.util.*;
+import java.util.ArrayDeque;
+
 
 public class Solver {
     private WorldState initialState;

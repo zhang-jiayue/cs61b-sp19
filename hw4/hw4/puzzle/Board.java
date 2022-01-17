@@ -2,10 +2,10 @@ package hw4.puzzle;
 import edu.princeton.cs.algs4.Queue;
 
 
-public class Board implements WorldState{
+public class Board implements WorldState {
     private static final int BLANK = 0;
-    private static final int [][] goal = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
-    private static final Board GOAL = new Board(Board.goal);
+    private static final int [][] GOAL_ARRAY = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
+    private static final Board GOAL = new Board(Board.GOAL_ARRAY);
     private int[][] tiles;
 
     public Board(int[][] tiles) {
@@ -14,13 +14,13 @@ public class Board implements WorldState{
 
     public int tileAt(int i, int j) {
         if (i > this.tiles.length - 1 || i < 0
-                || j < 0 || j > this.tiles.length - 1 ){
+                || j < 0 || j > this.tiles.length - 1) {
             throw new IndexOutOfBoundsException("Invalid index.");
         }
         return tiles[i][j];
     }
 
-    public int size(){
+    public int size() {
         return tiles.length * tiles[0].length;
     }
 
@@ -87,14 +87,14 @@ public class Board implements WorldState{
                  * resu += (j - J) + (i - I)
                  */
                 int actual = tiles[i][j];
-                int expected = goal[i][j];
+                int expected = GOAL_ARRAY[i][j];
                 int expectedI = actual % 3 - 1;
                 int expectedJ;
-                if (actual != expected & actual!= 0) {
+                if (actual != expected & actual != 0) {
                     // Since We don't care about the position of blank.
                     if (actual <= 3) {
                         expectedJ = 0;
-                    } else if(actual <= 6) {
+                    } else if (actual <= 6) {
                         expectedJ = 1;
                     } else {
                         expectedJ = 2;
@@ -123,6 +123,10 @@ public class Board implements WorldState{
 
     }
 
+    public int hashCode() {
+        return 0;
+    }
+
 
     /** Returns the string representation of the board. 
       * Uncomment this method. */
@@ -132,7 +136,7 @@ public class Board implements WorldState{
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
