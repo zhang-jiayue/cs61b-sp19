@@ -103,8 +103,11 @@ public class Board implements WorldState {
                 int expected = this.goal[i][j];
                 if (actual != expected & actual != 0) {
                     int expectedJ = actual % this.N - 1;
+                    if (expectedJ < 0) {
+                        expectedJ = this.N - 1;
+                    }
                     // Since We don't care about the position of blank.
-                    int expectedI = (int) (Math.ceil((double)actual / this.N) - 1);
+                    int expectedI = (int) (Math.ceil((double) actual / this.N) - 1);
                     resu += Math.abs(expectedI - i) + Math.abs(expectedJ - j);
                 }
             }
@@ -121,7 +124,7 @@ public class Board implements WorldState {
             return false;
         } else if (this.getClass() != y.getClass()) {
             return false;
-        } else if(!(y instanceof Board)) {
+        } else if (!(y instanceof Board)) {
             return false;
         } else if (this.N != ((Board) y).N) {
             return false;
