@@ -121,6 +121,10 @@ public class Board implements WorldState {
             return false;
         } else if (this.getClass() != y.getClass()) {
             return false;
+        } else if(!(y instanceof Board)) {
+            return false;
+        } else if (this.N != ((Board) y).N) {
+            return false;
         } else {
             boolean resu = true;
             Board other = (Board) y;
@@ -132,6 +136,7 @@ public class Board implements WorldState {
                 }
             }
             return resu;
+
         }
 
     }
