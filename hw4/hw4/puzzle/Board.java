@@ -4,24 +4,37 @@ import edu.princeton.cs.algs4.Queue;
 
 public class Board implements WorldState {
     private static final int BLANK = 0;
-    private static final int [][] GOAL_ARRAY = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
-    private static final Board GOAL = new Board(Board.GOAL_ARRAY);
+    private int[][] goal;
     private int[][] tiles;
+    private int N;
 
     public Board(int[][] tiles) {
-        this.tiles = tiles;
+        this.N = tiles.length;
+        this.goal = new int[N][N];
+        this.tiles = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (i == N - 1 && j == N - 1) {
+                    goal[i][j] = 0;
+                    this.tiles[i][j] = tiles[i][j];
+                } else {
+                    this.tiles[i][j] = tiles[i][j];
+                    goal[i][j] = N * i + j + 1;
+                }
+            }
+        }
     }
 
     public int tileAt(int i, int j) {
-        if (i > this.tiles.length - 1 || i < 0
-                || j < 0 || j > this.tiles.length - 1) {
+        if (i > N - 1 || i < 0
+                || j < 0 || j > N - 1) {
             throw new IndexOutOfBoundsException("Invalid index.");
         }
         return tiles[i][j];
     }
 
     public int size() {
-        return tiles.length * tiles[0].length;
+        return this.N;
     }
 
     @Override
@@ -65,9 +78,9 @@ public class Board implements WorldState {
 
     public int hamming() {
         int resu = 0;
-        for (int i = 0; i < this.tiles.length; i++) {
-            for (int j = 0; j < this.tiles[0].length; j++) {
-                if (this.tiles[i][j] != GOAL.tiles[i][j]) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (this.tiles[i][j] != goal[i][j] && this.tiles[i][j] != 0) {
                     resu += 1;
                 }
             }
@@ -77,8 +90,8 @@ public class Board implements WorldState {
 
     public int manhattan() {
         int resu = 0;
-        for (int i = 0; i < this.tiles.length; i++) {
-            for (int j = 0; j < this.tiles[0].length; j++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 /** Actual: i, j
                  *  Expected: I, J
                  *  GOAL[i][j] = 3 * j + i + 1;
@@ -87,18 +100,12 @@ public class Board implements WorldState {
                  * resu += (j - J) + (i - I)
                  */
                 int actual = tiles[i][j];
-                int expected = GOAL_ARRAY[i][j];
-                int expectedI = actual % 3 - 1;
+                int expected = goal[i][j];
+                int expectedI = actual % this.N - 1;
                 int expectedJ;
                 if (actual != expected & actual != 0) {
                     // Since We don't care about the position of blank.
-                    if (actual <= 3) {
-                        expectedJ = 0;
-                    } else if (actual <= 6) {
-                        expectedJ = 1;
-                    } else {
-                        expectedJ = 2;
-                    }
+                    expectedJ = actual / N - 1;
                     resu += Math.abs(expectedI - i) + Math.abs(expectedJ - j);
                 }
             }
@@ -132,7 +139,6 @@ public class Board implements WorldState {
       * Uncomment this method. */
     public String toString() {
         StringBuilder s = new StringBuilder();
-        int N = size();
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {

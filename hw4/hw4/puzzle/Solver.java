@@ -2,6 +2,7 @@ package hw4.puzzle;
 import edu.princeton.cs.algs4.MinPQ;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 
 public class Solver {
@@ -42,6 +43,7 @@ public class Solver {
      * everything necessary for moves() and solution() to
      * not have to solve the problem again. Solves the
      * puzzle using the A* algorithm. Assumes a solution exists.
+     *
      * @param initial the initial state of the world
      */
     public Solver(WorldState initial) {
@@ -50,26 +52,43 @@ public class Solver {
         this.sol = new ArrayDeque<>();
         this.pq.insert(new SearchNode(initial, null, 0));
         this.currenNode = pq.delMin();
-
-        thingsEverEnqued += 1;
-        while (!currenNode.state.isGoal()) {
-            // Remove lowest priority item and add its neighbors to the priority queue.
+        if (!currenNode.state.isGoal()) {
             for (WorldState neighbor : this.currenNode.state.neighbors()) {
-                if (this.currenNode.previousNode == null
-                        || !this.currenNode.previousNode.state.equals(neighbor)) {
-                    // Critical optimization:
-                    pq.insert(new SearchNode(neighbor, this.currenNode,
-                            this.currenNode.movesMadeSoFar + 1));
+                enqueNeighbor(neighbor);
+            }
+            this.currenNode = pq.delMin();
 
-                    thingsEverEnqued += 1;
+        }
+        while (!currenNode.state.isGoal()) {
+        // Remove lowest priority item and add its neighbors to the priority queue.
+            for (WorldState neighbor : this.currenNode.state.neighbors()) {
+                if (this.currenNode.previousNode != null
+                        && !this.currenNode.previousNode.state.equals(neighbor)
+                        && !this.currenNode.equals(neighbor)) {
+                    // Critical optimization:
+                    enqueNeighbor(neighbor);
                 }
             }
             this.currenNode = pq.delMin();
         }
     }
+    private void enqueNeighbor(WorldState neighbor) {
+        pq.insert(new SearchNode(neighbor, this.currenNode,
+                this.currenNode.movesMadeSoFar + 1));
+        thingsEverEnqued += 1;
+    }
 
-    public int getThingsEverEnqued() {
+
+    private int getThingsEverEnqued() {
         return this.thingsEverEnqued;
+    }
+
+    private Iterable<WorldState> getPQ() {
+        ArrayList<WorldState> newPQ = new ArrayList<>();
+        for (SearchNode n : this.pq) {
+            newPQ.add(n.state);
+        }
+        return newPQ;
     }
 
     /**
@@ -85,6 +104,7 @@ public class Solver {
      */
     public Iterable<WorldState> solution() {
         SearchNode n = this.currenNode;
+        sol.addFirst(n.state);
         while (n.previousNode != null) {
             this.sol.addFirst(n.previousNode.state);
             n = n.previousNode;
