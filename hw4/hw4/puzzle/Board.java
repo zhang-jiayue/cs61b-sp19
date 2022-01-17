@@ -101,11 +101,11 @@ public class Board implements WorldState {
                  */
                 int actual = tiles[i][j];
                 int expected = goal[i][j];
-                int expectedI = actual % this.N - 1;
-                int expectedJ;
+                int expectedJ = actual % this.N - 1;
+                int expectedI;
                 if (actual != expected & actual != 0) {
                     // Since We don't care about the position of blank.
-                    expectedJ = actual / N - 1;
+                    expectedI = actual / N - 1;
                     resu += Math.abs(expectedI - i) + Math.abs(expectedJ - j);
                 }
             }
@@ -114,15 +114,13 @@ public class Board implements WorldState {
     }
 
     public int estimatedDistanceToGoal() {
-        return hamming();
+        return manhattan();
     }
 
     public boolean equals(Object y) {
         if (y == null) {
             return false;
         } else if (this.getClass() != y.getClass()) {
-            return false;
-        } else if (!(y instanceof Board)) {
             return false;
         } else {
             return hamming() == 0;
