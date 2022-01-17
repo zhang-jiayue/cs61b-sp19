@@ -21,13 +21,6 @@ public class Solver {
             this.movesMadeSoFar = moves;
         }
 
-        public int getMovesMadeSoFar() {
-            return movesMadeSoFar;
-        }
-        public void setMovesMadeSoFar(int moves) {
-            this.movesMadeSoFar = moves;
-        }
-
         public int getPriority() {
             return movesMadeSoFar + state.estimatedDistanceToGoal();
         }
@@ -42,6 +35,7 @@ public class Solver {
             }
         }
     }
+
     /**
      * Constructor which solves the puzzle, computing
      * everything necessary for moves() and solution() to
@@ -77,7 +71,6 @@ public class Solver {
         return this.thingsEverEnqued;
     }
 
-
     /**
      *  Returns the minimum number of moves to solve the puzzle starting
      *  at the initial WorldState.
@@ -85,7 +78,6 @@ public class Solver {
     public int moves() {
         return this.currenNode.movesMadeSoFar;
     }
-
 
     /**
      * @return a sequence of WorldStates from the initial WorldState to the solution.
