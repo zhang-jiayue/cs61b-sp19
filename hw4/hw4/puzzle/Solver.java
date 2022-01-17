@@ -4,19 +4,21 @@ import edu.princeton.cs.algs4.MinPQ;
 import java.util.*;
 
 public class Solver {
+    private WorldState initialState;
     private SearchNode currenNode;
     private MinPQ<SearchNode> pq;
-    private HashSet<WorldState> sol;
     private int thingsEverEnqued;
+    private ArrayDeque<WorldState> sol;
 
-    private class SearchNode{
+    private class SearchNode<T> implements Comparable<T> {
         private WorldState state;
         private int movesMadeSoFar;
         private SearchNode previousNode;
 
-        public SearchNode(WorldState current, SearchNode prev) {
-            this.state = current;
-            this.previousNode = prev;
+        SearchNode(WorldState currentState, SearchNode prevNode, int moves) {
+            this.state = currentState;
+            this.previousNode = prevNode;
+            this.movesMadeSoFar = moves;
         }
 
         public int getMovesMadeSoFar() {
@@ -29,6 +31,16 @@ public class Solver {
         public int getPriority() {
             return movesMadeSoFar + state.estimatedDistanceToGoal();
         }
+
+        public int compareTo(T other) {
+            if (this.getPriority() < ((SearchNode) other).getPriority()) {
+                return -1;
+            } else if (this.getPriority() == ((SearchNode) other).getPriority()) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
     }
     /**
      * Constructor which solves the puzzle, computing
@@ -38,35 +50,26 @@ public class Solver {
      * @param initial the initial state of the world
      */
     public Solver(WorldState initial) {
-        Comparator<SearchNode> cmpr= new Comparator<>() {
-            @Override
-            public int compare(SearchNode o1, SearchNode o2) {
-                if (o1.getPriority() < o2.getPriority()) {
-                    return -1;
-                } else if (o1.getPriority() == o2.getPriority()){
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        };
-        this.pq = new MinPQ<>(cmpr);
-        this.sol = new HashSet<>();
-        this.currenNode = new SearchNode(initial, null);
+        this.initialState = initial;
+        this.pq = new MinPQ<>();
+        this.sol = new ArrayDeque<>();
+        this.pq.insert(new SearchNode(initial, null, 0));
+        this.currenNode = pq.delMin();
+
         thingsEverEnqued += 1;
         while (!currenNode.state.isGoal()) {
             // Remove lowest priority item and add its neighbors to the priority queue.
             for (WorldState neighbor : this.currenNode.state.neighbors()) {
-                if(this.currenNode.previousNode== null || !this.currenNode.previousNode.state.equals(neighbor)){
+                if (this.currenNode.previousNode == null
+                        || !this.currenNode.previousNode.state.equals(neighbor)) {
                     // Critical optimization:
-                    pq.insert(new SearchNode(neighbor, this.currenNode));
+                    pq.insert(new SearchNode(neighbor, this.currenNode,
+                            this.currenNode.movesMadeSoFar + 1));
+
                     thingsEverEnqued += 1;
                 }
             }
-            SearchNode prev = this.currenNode;
             this.currenNode = pq.delMin();
-            this.currenNode.setMovesMadeSoFar(prev.getMovesMadeSoFar() + 1);
-            this.sol.add(this.currenNode.state);
         }
     }
 
@@ -88,6 +91,11 @@ public class Solver {
      * @return a sequence of WorldStates from the initial WorldState to the solution.
      */
     public Iterable<WorldState> solution() {
+        SearchNode n = this.currenNode;
+        while (n.previousNode != null) {
+            this.sol.addFirst(n.previousNode.state);
+            n = n.previousNode;
+        }
         return sol;
     }
 
