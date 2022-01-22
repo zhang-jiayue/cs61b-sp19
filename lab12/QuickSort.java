@@ -47,13 +47,68 @@ public class QuickSort {
     private static <Item extends Comparable> void partition(
             Queue<Item> unsorted, Item pivot,
             Queue<Item> less, Queue<Item> equal, Queue<Item> greater) {
-        // Your code here!
+        for (Item i : unsorted) {
+            if (i.compareTo(pivot) < 0) {
+                less.enqueue(i);
+            } else if (i.compareTo(pivot) == 0) {
+                equal.enqueue(i);
+            } else {
+                greater.enqueue(i);
+            }
+        }
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> quickSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        // Base case: size 1 problems.
+        if (items.isEmpty() || items.size() == 1) {
+            return items;
+        }
+
+        // Pass a random item in the queue as pivot.
+        Queue<Item> less = new Queue<>();
+        Queue<Item> equal = new Queue<>();
+        Queue<Item> greater = new Queue<>();
+        partition(items, getRandomItem(items), less, equal, greater);
+
+        // Recursive calls, the equal queue is already in its place,
+        // exactly where it'd be if the array were sorted
+        // Sort the rest two halves separately.
+        Queue<Item> resu = catenate(quickSort(less), equal);
+        resu = catenate(resu, quickSort(greater));
+
+        return resu;
+    }
+
+    public static void main(String[] args) {
+        Queue<Integer> ints = new Queue<>();
+        ints.enqueue(34);
+        ints.enqueue(17);
+        ints.enqueue(14);
+        ints.enqueue(17);
+        ints.enqueue(23);
+        ints.enqueue(35);
+        ints.enqueue(99);
+        ints.enqueue(14);
+        ints.enqueue(14);
+        ints.enqueue(6);
+        ints.enqueue(5);
+        for (Integer i : ints) {
+            System.out.println(i);
+        }
+        ints = quickSort(ints);
+        System.out.println("After MergeSort: ");
+        for (Integer i : ints) {
+            System.out.println(i);
+        }
+        Queue<Integer> emptyQueue = new Queue<>();
+        emptyQueue = quickSort(emptyQueue);
+        System.out.println("After MergeSort: ");
+        for (Integer i : emptyQueue) {
+            System.out.println(i);
+        }
+
+
     }
 }
