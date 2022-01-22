@@ -1,6 +1,8 @@
 import edu.princeton.cs.algs4.Merge;
 import edu.princeton.cs.algs4.Queue;
 
+import java.util.Iterator;
+
 public class MergeSort {
     /**
      * Removes and returns the smallest item that is in q1 or q2.
@@ -75,11 +77,12 @@ public class MergeSort {
         // Split items into 2 roughly even pieces.
         Queue<Item> leftOfItems = new Queue<>();
         Queue<Item> rightOfItems = new Queue<>();
+        Iterator<Item> iterator= items.iterator();
         for (int i = 0; i < items.size() / 2; i++) {
-            leftOfItems.enqueue(items.dequeue());
+            leftOfItems.enqueue(iterator.next());
         }
-        while(!items.isEmpty()) {
-            rightOfItems.enqueue(items.dequeue());
+        while(iterator.hasNext()) {
+            rightOfItems.enqueue(iterator.next());
         }
 
         // If the size of the right piece is two, we can assume that the left queue is of size 1 and is sorted.
