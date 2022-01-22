@@ -1,3 +1,4 @@
+import edu.princeton.cs.algs4.Merge;
 import edu.princeton.cs.algs4.Queue;
 
 public class MergeSort {
@@ -34,8 +35,13 @@ public class MergeSort {
     /** Returns a queue of queues that each contain one item from items. */
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+        Queue<Queue<Item>> resu = new Queue<Queue<Item>>();
+        while (!items.isEmpty()) {
+            Queue<Item> nq = new Queue<>();
+            nq.enqueue(items.dequeue());
+            resu.enqueue(nq);
+        }
+        return resu;
     }
 
     /**
@@ -53,14 +59,52 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> resu = new Queue<>();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            resu.enqueue(getMin(q1, q2));
+        }
+        return resu;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        // Split items into 2 roughly even pieces.
+        Queue<Item> leftOfItems = new Queue<>();
+        Queue<Item> rightOfItems = new Queue<>();
+        for (int i = 0; i < items.size() / 2; i++) {
+            leftOfItems.enqueue(items.dequeue());
+        }
+        while(!items.isEmpty()) {
+            rightOfItems.enqueue(items.dequeue());
+        }
+
+        // If the size of the right piece is two, we can assume that the left queue is of size 1 and is sorted.
+        // We Mergesort the right queue.
+        if (rightOfItems.size() == 2) {
+             Queue<Queue<Item>> singleItems = makeSingleItemQueues(rightOfItems);
+             Queue<Item> q1 = singleItems.dequeue();
+             Queue<Item> q2 = singleItems.dequeue();
+            rightOfItems = mergeSortedQueues(q1, q2);
+        } else {  // If the right half of the queue is not of size 2, we mergeSort each half.
+            leftOfItems = mergeSort(leftOfItems);
+            rightOfItems = mergeSort(rightOfItems);
+        }
+        return mergeSortedQueues(leftOfItems, rightOfItems);
+    }
+    public static void main(String[] args) {
+        Queue<String> students = new Queue<String>();
+        students.enqueue("Alice");
+        students.enqueue("Vanessa");
+        students.enqueue("Ethan");
+        for (String s : students) {
+            System.out.println(s);
+        }
+        students = mergeSort(students);
+        System.out.println("After MergeSort: ");
+        for (String s : students) {
+            System.out.println(s);
+        }
+
     }
 }
