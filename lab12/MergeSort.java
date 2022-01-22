@@ -77,12 +77,11 @@ public class MergeSort {
         // Split items into 2 roughly even pieces.
         Queue<Item> leftOfItems = new Queue<>();
         Queue<Item> rightOfItems = new Queue<>();
-        Iterator<Item> iterator= items.iterator();
         for (int i = 0; i < items.size() / 2; i++) {
-            leftOfItems.enqueue(iterator.next());
+            leftOfItems.enqueue(items.dequeue());
         }
-        while(iterator.hasNext()) {
-            rightOfItems.enqueue(iterator.next());
+        while(!items.isEmpty()) {
+            rightOfItems.enqueue(items.dequeue());
         }
 
         // If the size of the right piece is two, we can assume that the left queue is of size 1 and is sorted.
@@ -96,7 +95,9 @@ public class MergeSort {
             leftOfItems = mergeSort(leftOfItems);
             rightOfItems = mergeSort(rightOfItems);
         }
-        items = mergeSortedQueues(leftOfItems, rightOfItems);
+        for(Item i : mergeSortedQueues(leftOfItems, rightOfItems)) {
+            items.enqueue(i);
+        }
         return items;
     }
     public static void main(String[] args) {
@@ -107,14 +108,14 @@ public class MergeSort {
         for (String s : students) {
             System.out.println(s);
         }
-        students = mergeSort(students);
+        mergeSort(students);
         System.out.println("After MergeSort: ");
         for (String s : students) {
             System.out.println(s);
         }
-        int[] integers = {0, 0, 3, 5, 5, 8, 8, 8, 12, 1, 15,
-                15, 16, 18, 18, 18, 19, 20, 21, 21, 22, 25, 8, 26, 26,
-                26, 16, 27, 27, 29};
+        int[] integers = {0, 0, 1, 1, 2, 3, 4, 5, 5, 0, 9, 9,
+                12, 13, 14, 16, 18, 21, 21, 21, 5, 23, 23, 14,
+                23, 25, 27, 28, 29, 11};
         Queue<Integer> ints = new Queue<>();
         for (int integer : integers) {
             ints.enqueue(integer);
@@ -123,7 +124,7 @@ public class MergeSort {
             System.out.println(i);
         }
         System.out.println("After sorting: ");
-        ints = mergeSort(ints);
+        mergeSort(ints);
         for (Integer i : ints) {
             System.out.println(i);
         }
