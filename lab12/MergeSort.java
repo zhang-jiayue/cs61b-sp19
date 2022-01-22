@@ -96,10 +96,11 @@ public class MergeSort {
             leftOfItems = mergeSort(leftOfItems);
             rightOfItems = mergeSort(rightOfItems);
         }
-        return mergeSortedQueues(leftOfItems, rightOfItems);
+        items = mergeSortedQueues(leftOfItems, rightOfItems);
+        return items;
     }
     public static void main(String[] args) {
-        Queue<String> students = new Queue<String>();
+        Queue<String> students = new Queue<>();
         students.enqueue("Alice");
         students.enqueue("Vanessa");
         students.enqueue("Ethan");
@@ -111,6 +112,20 @@ public class MergeSort {
         for (String s : students) {
             System.out.println(s);
         }
-
+        int[] integers = {0, 0, 3, 5, 5, 8, 8, 8, 12, 1, 15,
+                15, 16, 18, 18, 18, 19, 20, 21, 21, 22, 25, 8, 26, 26,
+                26, 16, 27, 27, 29};
+        Queue<Integer> ints = new Queue<>();
+        for (int integer : integers) {
+            ints.enqueue(integer);
+        }
+        for (Integer i : ints) {
+            System.out.println(i);
+        }
+        System.out.println("After sorting: ");
+        ints = mergeSort(ints);
+        for (Integer i : ints) {
+            System.out.println(i);
+        }
     }
 }
