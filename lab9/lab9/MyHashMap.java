@@ -1,5 +1,6 @@
 package lab9;
 
+//import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -63,6 +64,30 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             this.size += 1;
         }
         buckets[hash(key)].put(key, value);
+        if (this.loadFactor() > MAX_LF) {
+            /* Resize the buckets by doubling the number of entries in the ArrayMap [] buckets. */
+            resize(this.buckets.length * 2);
+        }
+    }
+
+    /**
+     * Resize the buckets by changing the number of buckets to cap.
+     * @param cap New number of buckets.
+     */
+    private void resize(int cap) {
+        ArrayMap<K, V> [] oldBuckets = this.buckets;
+        /* Create a new ArrayMap [] with cap # of buckets. */
+        this.buckets = new ArrayMap[cap];
+        /* Hash each items in the original ArrayMap again,
+        * using length of the newBucket ArrayMap. */
+        for (ArrayMap map : oldBuckets) {
+            Iterator<K> seer = map.iterator();
+            while (seer.hasNext()) {
+                this.put(seer.next(), (V) map.get(seer.next()));
+            }
+        }
+
+        /* Put the items in the new array, and point buckets to newBucket*/
 
     }
 

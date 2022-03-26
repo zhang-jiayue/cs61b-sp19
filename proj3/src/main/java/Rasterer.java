@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 public class Rasterer {
 
     public Rasterer() {
-        // YOUR CODE HERE
+
     }
 
     /**
@@ -42,11 +43,97 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-        // System.out.println(params);
+        System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
-                           + "your browser.");
+        boolean query_success = true;
+        double lrlon = params.get("lrlon");
+        double ullon = params.get("ullon");
+        double lrlat = params.get("lrlat");
+        double ullat = params.get("ullat");
+        double w = params.get("w");
+        double h = params.get("h");
+        double desiredLonDPP = (lrlon - ullon) / w;    //LonDPP of the query box. Units of longitude per pixel
+
+        // LonDPP for each level, a descending sorted list
+        double [] lonDPP = new double[8];
+        double d1 = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / 2 / MapServer.TILE_SIZE;
+        lonDPP[0] = d1;
+        for (int i = 1; i < 8; i++) {
+            lonDPP[i] = lonDPP[i-1]/2;
+        }
+//        System.out.println(desiredLonDPP);
+
+        // Calculate the level of zoom we need
+        int depth = 0;
+        if (lonDPP[7] >= desiredLonDPP) {    // If the LonDPP of level 7 is already greater than the desired, we use d7 instead.
+            depth = 7;
+        } else if (desiredLonDPP >= lonDPP[6]){
+            depth = 6;
+        } else if (desiredLonDPP >= lonDPP[5]){
+            depth = 5;
+        } else if (desiredLonDPP >= lonDPP[4]){
+            depth = 4;
+        } else if (desiredLonDPP >= lonDPP[3]){
+            depth = 3;
+        } else if (desiredLonDPP >= lonDPP[2]){
+            depth = 2;
+        } else if (desiredLonDPP >= lonDPP[1]){
+            depth = 1;
+        } else if (desiredLonDPP >= lonDPP[0]){
+            depth = 0;
+        } else{
+            query_success = false;
+        }
+//        System.out.println(level);
+        /** raster_ul_lon < ullon and raster_ul_lon is the largest possible
+         *  raster_ul_lat > ullat
+         *  raster_lr_lon > lrlon
+         *  raster_lr_lat < lrlat
+         */
+        double lon = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
+        double lat = MapServer.ROOT_ULLON - MapServer.ROOT_LRLON;
+        double raster_ul_lon = ullon - MapServer.ROOT_ULLON;
+        double raster_ul_lat = MapServer.ROOT_ULLAT - ullat;
+        double raster_lr_lon = lrlon - MapServer.ROOT_ULLON;
+        double raster_lr_lat = MapServer.ROOT_ULLAT - lrlat;
+
+        double interval = lon / Math.pow(2, depth);
+        int upper_x = (int) (raster_ul_lon / interval);
+        int upper_y = (int) (raster_ul_lat / interval);
+        int lower_x = (int) (raster_lr_lon / interval);
+        int lower_y = (int) (raster_lr_lat / interval);
+
+        raster_ul_lon = MapServer.ROOT_ULLON + upper_x * interval;
+        raster_ul_lat = MapServer.ROOT_ULLAT - upper_y * interval;
+        raster_lr_lon = MapServer.ROOT_ULLON + lower_x * interval;
+        raster_lr_lat = MapServer.ROOT_ULLAT - lower_y * interval;
+
+        String[][] render_grid = new String[lower_x-upper_x+1][lower_y-upper_y+1];
+        for (int row = 0; row < lower_x-upper_x+1; row++) {
+            for (int col = 0; col < lower_y - upper_y+1; col++) {
+                if (row == 0 && col == 0) {
+                    render_grid[row][col] = String.format("d%d_x%d_y%d", depth, upper_x, upper_y);
+                } else if (row == 0) {
+                    render_grid[row][col] = String.format("d%d_x%d_y%d",
+                            depth, Character.getNumericValue(render_grid[row][col-1].charAt(4)) + 1,
+                            Character.getNumericValue(render_grid[row][col-1].charAt(7)) + 1);
+                } else {
+                    render_grid[row][col] = String.format("d%d_x%d_y%d",
+                            depth, Character.getNumericValue(render_grid[row-1][col].charAt(4)) + 1,
+                            Character.getNumericValue(render_grid[row-1][col].charAt(7)));
+                }
+            }
+        }
+        System.out.println(Arrays.deepToString(render_grid));
+
+        results.put("render_grid", render_grid);
+        results.put("raster_ul_lon", raster_ul_lon);
+        results.put("raster_ul_lat", raster_ul_lat);
+        results.put("raster_lr_lon", raster_lr_lon);
+        results.put("raster_lr_lat", raster_lr_lat);
+        results.put("depth", depth);
+        results.put("query_success", query_success);
+
         return results;
     }
-
 }

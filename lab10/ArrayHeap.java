@@ -121,42 +121,57 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        int leftChild = leftIndex(index);
-        int rightChild = rightIndex(index);
-
-
-        // Return if reached the bottom row.
-
-        if (getNode(leftChild) == null & getNode(rightChild) == null) {
-            return;
-        } else if (getNode(rightChild) == null) {
-            double leftP = getNode(leftChild).priority();
-            double currentP = getNode(index).priority();
-            if (currentP > leftP) {
-                swap(index, leftChild);
-                sink(leftChild);
+        while (2 * index <= size) {
+            // While it is not in the bottom row of the heap, and it's not the last item.
+            int child = leftIndex(index);
+            if (child < size && getNode(child).priority() > getNode(child + 1).priority()) {
+                child++; //exchange with the right child
             }
-        } else {
-            double leftP = getNode(leftChild).priority();
-            double rightP = getNode(rightChild).priority();
-            double currentP = getNode(index).priority();
-
-            if (currentP > leftP & currentP > rightP) {
-                if (leftP < rightP) {
-                    swap(index, leftChild);
-                    sink(leftChild);
-                } else {
-                    swap(index, rightChild);
-                    sink(rightChild);
-                }
-            } else if (currentP > leftP) {
-                swap(index, leftChild);
-                sink(leftChild);
-            } else if (currentP > rightP) {
-                swap(index, rightChild);
-                sink(rightChild);
+            if (getNode(index).priority() < getNode(child).priority()) {
+                //  Node already in its right place.
+                break;
             }
+            swap(index, child);
+            index = child;
+
         }
+
+//        int leftChild = leftIndex(index);
+//        int rightChild = rightIndex(index);
+//
+//
+//        // Return if reached the bottom row.
+//
+//        if (getNode(leftChild) == null & getNode(rightChild) == null) {
+//            return;
+//        } else if (getNode(rightChild) == null) {
+//            double leftP = getNode(leftChild).priority();
+//            double currentP = getNode(index).priority();
+//            if (currentP > leftP) {
+//                swap(index, leftChild);
+//                sink(leftChild);
+//            }
+//        } else {
+//            double leftP = getNode(leftChild).priority();
+//            double rightP = getNode(rightChild).priority();
+//            double currentP = getNode(index).priority();
+//
+//            if (currentP > leftP & currentP > rightP) {
+//                if (leftP < rightP) {
+//                    swap(index, leftChild);
+//                    sink(leftChild);
+//                } else {
+//                    swap(index, rightChild);
+//                    sink(rightChild);
+//                }
+//            } else if (currentP > leftP) {
+//                swap(index, leftChild);
+//                sink(leftChild);
+//            } else if (currentP > rightP) {
+//                swap(index, rightChild);
+//                sink(rightChild);
+//            }
+//        }
 
     }
 
