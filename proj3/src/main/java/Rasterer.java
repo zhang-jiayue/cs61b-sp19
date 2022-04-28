@@ -61,67 +61,85 @@ public class Rasterer {
         for (int i = 1; i < 8; i++) {
             lonDPP[i] = lonDPP[i-1]/2;
         }
+//        System.out.println(Arrays.toString(lonDPP));
 //        System.out.println(desiredLonDPP);
 
         // Calculate the level of zoom we need
         int depth = 0;
-        if (lonDPP[7] >= desiredLonDPP) {    // If the LonDPP of level 7 is already greater than the desired, we use d7 instead.
+        if (desiredLonDPP <= lonDPP[6]){
             depth = 7;
-        } else if (desiredLonDPP >= lonDPP[6]){
+        } else if (desiredLonDPP <= lonDPP[5]){
+            depth = 7;
+        } else if (desiredLonDPP <= lonDPP[4]){
             depth = 6;
-        } else if (desiredLonDPP >= lonDPP[5]){
+        } else if (desiredLonDPP <= lonDPP[3]){
             depth = 5;
-        } else if (desiredLonDPP >= lonDPP[4]){
+        } else if (desiredLonDPP <= lonDPP[2]){
             depth = 4;
-        } else if (desiredLonDPP >= lonDPP[3]){
+        } else if (desiredLonDPP <= lonDPP[1]){
             depth = 3;
-        } else if (desiredLonDPP >= lonDPP[2]){
+        } else if (desiredLonDPP <= lonDPP[0]){
             depth = 2;
-        } else if (desiredLonDPP >= lonDPP[1]){
+        } else {
             depth = 1;
-        } else if (desiredLonDPP >= lonDPP[0]){
-            depth = 0;
-        } else{
-            query_success = false;
         }
-//        System.out.println(level);
+        System.out.println(depth);
         /** raster_ul_lon < ullon and raster_ul_lon is the largest possible
          *  raster_ul_lat > ullat
          *  raster_lr_lon > lrlon
          *  raster_lr_lat < lrlat
          */
         double lon = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
-        double lat = MapServer.ROOT_ULLON - MapServer.ROOT_LRLON;
+        double lat = MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT;
         double raster_ul_lon = ullon - MapServer.ROOT_ULLON;
         double raster_ul_lat = MapServer.ROOT_ULLAT - ullat;
         double raster_lr_lon = lrlon - MapServer.ROOT_ULLON;
         double raster_lr_lat = MapServer.ROOT_ULLAT - lrlat;
 
-        double interval = lon / Math.pow(2, depth);
-        int upper_x = (int) (raster_ul_lon / interval);
-        int upper_y = (int) (raster_ul_lat / interval);
-        int lower_x = (int) (raster_lr_lon / interval);
-        int lower_y = (int) (raster_lr_lat / interval);
+        double interval_lon = lon / Math.pow(2, depth);
+        double interval_lat = lat / Math.pow(2, depth);
+        int upper_x = raster_ul_lon < 0 ? 0 : (int) (raster_ul_lon / interval_lon);
+        int upper_y = raster_ul_lat < 0 ? 0 : (int) (raster_ul_lat / interval_lat);
+        int lower_x = lrlon > MapServer.ROOT_LRLON ?  (int)Math.pow(2, depth) - 1 : (int) (raster_lr_lon / interval_lon);
+        int lower_y = lrlat < MapServer.ROOT_LRLAT ? (int)Math.pow(2, depth) - 1 : (int) (raster_lr_lat / interval_lat);
 
-        raster_ul_lon = MapServer.ROOT_ULLON + upper_x * interval;
-        raster_ul_lat = MapServer.ROOT_ULLAT - upper_y * interval;
-        raster_lr_lon = MapServer.ROOT_ULLON + lower_x * interval;
-        raster_lr_lat = MapServer.ROOT_ULLAT - lower_y * interval;
+        System.out.println(upper_x);
+        System.out.println(upper_y);
+        System.out.println(lower_x);
+        System.out.println(lower_y);
 
-        String[][] render_grid = new String[lower_x-upper_x+1][lower_y-upper_y+1];
-        for (int row = 0; row < lower_x-upper_x+1; row++) {
-            for (int col = 0; col < lower_y - upper_y+1; col++) {
+
+        raster_ul_lon = MapServer.ROOT_ULLON + upper_x * interval_lon;
+        raster_ul_lat = MapServer.ROOT_ULLAT - upper_y * interval_lat;
+        raster_lr_lon = MapServer.ROOT_ULLON + lower_x * interval_lon;
+        raster_lr_lat = MapServer.ROOT_ULLAT - lower_y * interval_lat;
+
+        int [][] render_grid_value_x = new int[lower_y-upper_y+1][lower_x-upper_x+1];
+        for (int row = 0; row < lower_y-upper_y+1; row++) {
+            for (int col = 0; col < lower_x-upper_x+1; col++) {
                 if (row == 0 && col == 0) {
-                    render_grid[row][col] = String.format("d%d_x%d_y%d", depth, upper_x, upper_y);
+                    render_grid_value_x[row][col] = upper_x;
                 } else if (row == 0) {
-                    render_grid[row][col] = String.format("d%d_x%d_y%d",
-                            depth, Character.getNumericValue(render_grid[row][col-1].charAt(4)) + 1,
-                            Character.getNumericValue(render_grid[row][col-1].charAt(7)) + 1);
+                    render_grid_value_x[row][col] = render_grid_value_x[0][col-1] + 1;
                 } else {
-                    render_grid[row][col] = String.format("d%d_x%d_y%d",
-                            depth, Character.getNumericValue(render_grid[row-1][col].charAt(4)) + 1,
-                            Character.getNumericValue(render_grid[row-1][col].charAt(7)));
+                    render_grid_value_x[row][col] = render_grid_value_x[row-1][col];
                 }
+            }
+        }
+        int [][] render_grid_value_y = new int[lower_y-upper_y+1][lower_x-upper_x+1];
+        for (int row = 0; row < lower_y-upper_y+1; row++) {
+            for (int col = 0; col < lower_x-upper_x+1; col++) {
+                if (row == 0) {
+                    render_grid_value_y[row][col] = upper_y;
+                } else {
+                    render_grid_value_y[row][col] = render_grid_value_y[row-1][col] + 1;
+                }
+            }
+        }
+        String[][] render_grid = new String[lower_y-upper_y+1][lower_x-upper_x+1];
+        for (int row = 0; row < lower_y-upper_y+1; row++) {
+            for (int col = 0; col < lower_x-upper_x+1; col++) {
+                render_grid[row][col] = String.format("d%d_x%d_y%d.png", depth, render_grid_value_x[row][col], render_grid_value_y[row][col]);
             }
         }
         System.out.println(Arrays.deepToString(render_grid));
