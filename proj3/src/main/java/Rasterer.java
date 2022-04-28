@@ -53,6 +53,7 @@ public class Rasterer {
         double w = params.get("w");
         double h = params.get("h");
         double desiredLonDPP = (lrlon - ullon) / w;    //LonDPP of the query box. Units of longitude per pixel
+        double desiredLatDPP = (ullat - lrlat) / h;
 
         // LonDPP for each level, a descending sorted list
         double [] lonDPP = new double[8];
@@ -83,7 +84,7 @@ public class Rasterer {
         } else {
             depth = 1;
         }
-        System.out.println(depth);
+//        System.out.println(depth);
         /** raster_ul_lon < ullon and raster_ul_lon is the largest possible
          *  raster_ul_lat > ullat
          *  raster_lr_lon > lrlon
@@ -103,10 +104,10 @@ public class Rasterer {
         int lower_x = lrlon > MapServer.ROOT_LRLON ?  (int)Math.pow(2, depth) - 1 : (int) (raster_lr_lon / interval_lon);
         int lower_y = lrlat < MapServer.ROOT_LRLAT ? (int)Math.pow(2, depth) - 1 : (int) (raster_lr_lat / interval_lat);
 
-        System.out.println(upper_x);
-        System.out.println(upper_y);
-        System.out.println(lower_x);
-        System.out.println(lower_y);
+//        System.out.println(upper_x);
+//        System.out.println(upper_y);
+//        System.out.println(lower_x);
+//        System.out.println(lower_y);
 
 
         raster_ul_lon = MapServer.ROOT_ULLON + upper_x * interval_lon;

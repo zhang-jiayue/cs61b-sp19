@@ -14,7 +14,6 @@ public class topKFrequent {
                 frequency ++;
                 i++;
             }
-            heap.add(new Map.Entry(frequency, currentNumber));
             if (i >= nums.length) {
                 break;
             }
