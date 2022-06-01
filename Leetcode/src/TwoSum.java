@@ -40,7 +40,6 @@ class TwoSum {
         int[] resu = twoSum(nums, -8);
         System.out.println(resu[0]);
         System.out.println(resu[1]);
-
     }
 }
 
